@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-/*note que: um hash extensível é um algoritmo de indexacao dinamica utilizado para organizar dados em arquivos de forma que a busca, insercao e remocao sejam extremamente
+/*note que: um hash extensivel é um algoritmo de indexacao dinamica utilizado para organizar dados em arquivos de forma que a busca, insercao e remocao sejam extremamente
 rapidas, geralmente exigindo apenas um ou dois acessos ao disco. Diferente do hash estatico, onde o tamanho da tabela é fixo, o hash extensivel cresce e diminui conforme
 a necessidade, evitando reorganizacoes completas do arquivo.
 */
 
-// struct do hash privada
+// struct do hash privada (opaca)
 typedef struct HashExtensivel HashExtensivel;
 
 /* 
@@ -24,8 +24,8 @@ HashExtensivel* hash_extensivel_abrir(const char* caminho_dados, const char* cam
  * hash_extensivel_inserir: coloca uma nova chave e um valor no hash (cuida da divisao de buckets se encher).
  * entrada: 
  *   hash: ponteiro da estrutura.
- *   chave: número inteiro identificador.
- *   valor: string com os dados (até 49 caracteres + \0).
+ *   chave: numero inteiro identificador.
+ *   valor: string com os dados (ate 49 caracteres + \0).
  * saida: true se salvou ok, false se deu algum problema.
  */
 bool hash_extensivel_inserir(HashExtensivel* hash, int chave, const char* valor);
@@ -34,15 +34,15 @@ bool hash_extensivel_inserir(HashExtensivel* hash, int chave, const char* valor)
  * hash_extensivel_buscar: tenta achar um registro pela chave.
  * entrada: 
  *   hash: ponteiro da estrutura.
- *   chave: o que está sendo procurado.
+ *   chave: o que esta sendo procurado.
  *   valor_out: onde vai copiar a string encontrada (precisa ter espaço de 50 bytes).
- * saida: true se achou, false se não existir no arquivo.
+ * saida: true se achou, false se nao existir no arquivo.
  */
 bool hash_extensivel_buscar(HashExtensivel* hash, int chave, char* valor_out);
 
 /* 
  * hash_extensivel_remover: apaga um registro do arquivo via chave. 
- * Entrada: 
+ * entrada: 
  *   hash: ponteiro da estrutura.
  *   chave: identificador do que remover.
  * saida: true se removeu, false se não achou pra tirar.
