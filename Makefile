@@ -1,24 +1,23 @@
+PROJ_NAME = ted
 CC = gcc
 
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -std=c99 -fstack-protector-all -Wall -Wextra -g -Isrc -Itst/unity
 
-TARGET = testes
-
-SRCS = hash_extensivel.c testes.c
+SRCS = src/hash_extensivel.c tst/t_hash_extensivel.c tst/unity/unity.c
 OBJS = $(SRCS:.c=.o)
 
-all: $(TARGET)
+$(PROJ_NAME): $(OBJS)
+	$(CC) $(CFLAGS) -o src/$(PROJ_NAME) $(OBJS)
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-
-%.o: %.c hash_extensivel.h
+%.o: %.c src/hash_extensivel.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-run: $(TARGET)
-	./$(TARGET)
+tstall: $(PROJ_NAME)
+	./src/$(PROJ_NAME)
+
+all: $(PROJ_NAME)
 
 clean:
-	rm -f $(OBJS) $(TARGET) *.bin
+	rm -f src/$(PROJ_NAME) $(OBJS) *.bin
 
-.PHONY: all run clean
+.PHONY: all tstall clean
