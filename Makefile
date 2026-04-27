@@ -5,7 +5,7 @@ LDFLAGS  = -lm
 PROJECT  = ted
 SRC      = src
 TST      = tst
-UNITY    = unity
+UNITY    = tst/unity
 
 # Objetos do programa principal
 OBJS = $(SRC)/main.o      \
@@ -51,17 +51,23 @@ t_hashfile: $(UNITY_OBJ) $(SRC)/hashfile.o $(TST)/t_hashfile.o
 t_hash_extensivel: $(UNITY_OBJ) $(SRC)/hash_extensivel.o $(TST)/t_hash_extensivel.o
 	$(CC) $(CFLAGS) $^ -o $(TST)/t_hash_extensivel $(LDFLAGS)
 
+t_system: $(UNITY_OBJ) $(SRC)/system.o $(SRC)/paths.o $(SRC)/quadra.o \
+          $(SRC)/habitante.o $(SRC)/hashfile.o $(SRC)/list.o $(SRC)/libs.o \
+          $(TST)/t_system.o
+	$(CC) $(CFLAGS) $^ -o $(TST)/t_system $(LDFLAGS)
+
 $(TST)/%.o: $(TST)/%.c
 	$(CC) $(CFLAGS) -I$(SRC) -I$(UNITY) -c $< -o $@
 
 # tstall: compila e roda todos os testes unitarios
-tstall: t_list t_paths t_quadra t_habitante t_hashfile t_hash_extensivel
+tstall: t_list t_paths t_quadra t_habitante t_hashfile t_hash_extensivel t_system
 	./$(TST)/t_list
 	./$(TST)/t_paths
 	./$(TST)/t_quadra
 	./$(TST)/t_habitante
 	./$(TST)/t_hashfile
 	./$(TST)/t_hash_extensivel
+	./$(TST)/t_system
 
 # ─── Valgrind ────────────────────────────────────────────────────────────────
 
@@ -96,4 +102,4 @@ valgrind: $(PROJECT)
 clean:
 	rm -f $(SRC)/*.o $(TST)/*.o $(UNITY)/*.o
 	rm -f $(SRC)/$(PROJECT)
-	rm -f $(TST)/t_hashfile $(TST)/t_hash_extensivel $(TST)/t_list $(TST)/t_paths $(TST)/t_quadra $(TST)/t_habitante
+	rm -f $(TST)/t_hashfile $(TST)/t_hash_extensivel $(TST)/t_list $(TST)/t_paths $(TST)/t_quadra $(TST)/t_habitante $(TST)/t_system

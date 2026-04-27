@@ -5,7 +5,7 @@
 #define SYSTEM_H
 
 /*
- * Modulo System (Orquestrador Principal)
+ * Modulo System
  *
  * Coordena a leitura dos arquivos de entrada (.geo, .pm, .qry),
  * a insercao de dados nos hashfiles e a geracao das saidas (SVG e TXT).

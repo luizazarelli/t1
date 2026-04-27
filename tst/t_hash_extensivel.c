@@ -15,8 +15,6 @@ void tearDown(void) {
     remove(ARQ_DIR);
 }
 
-/* --- hash_extensivel_abrir --- */
-
 void test_abrir_cria_novo(void) {
     HashExtensivel* h = hash_extensivel_abrir(ARQ_DADOS, ARQ_DIR);
     TEST_ASSERT_NOT_NULL(h);
@@ -35,8 +33,6 @@ void test_abrir_reabre_existente(void) {
     TEST_ASSERT_EQUAL_STRING("persistido", val);
     hash_extensivel_fechar(h);
 }
-
-/* --- hash_extensivel_inserir / hash_extensivel_buscar --- */
 
 void test_inserir_e_buscar(void) {
     HashExtensivel* h = hash_extensivel_abrir(ARQ_DADOS, ARQ_DIR);
@@ -69,8 +65,6 @@ void test_buscar_inexistente(void) {
     hash_extensivel_fechar(h);
 }
 
-/* --- hash_extensivel_remover --- */
-
 void test_remover_existente(void) {
     HashExtensivel* h = hash_extensivel_abrir(ARQ_DADOS, ARQ_DIR);
     hash_extensivel_inserir(h, 5, "cinco");
@@ -86,17 +80,12 @@ void test_remover_inexistente(void) {
     hash_extensivel_fechar(h);
 }
 
-/* --- split de bucket (BUCKET_SIZE = 3, logo 4 insercoes causam divisao) --- */
-
 void test_split_apos_bucket_cheio(void) {
-    /* Chaves 0,1,2,3: com p=0 todas vao ao bucket 0.
-     * A 4a insercao causa split; apos divisao 0 e 2 ficam no bucket 0,
-     * 1 e 3 ficam no bucket 1. Todas devem ser encontradas. */
     HashExtensivel* h = hash_extensivel_abrir(ARQ_DADOS, ARQ_DIR);
     TEST_ASSERT_TRUE(hash_extensivel_inserir(h, 0, "zero"));
     TEST_ASSERT_TRUE(hash_extensivel_inserir(h, 1, "um"));
     TEST_ASSERT_TRUE(hash_extensivel_inserir(h, 2, "dois"));
-    TEST_ASSERT_TRUE(hash_extensivel_inserir(h, 3, "tres")); /* dispara split */
+    TEST_ASSERT_TRUE(hash_extensivel_inserir(h, 3, "tres"));
     char val[50];
     TEST_ASSERT_TRUE(hash_extensivel_buscar(h, 0, val)); TEST_ASSERT_EQUAL_STRING("zero", val);
     TEST_ASSERT_TRUE(hash_extensivel_buscar(h, 1, val)); TEST_ASSERT_EQUAL_STRING("um",   val);

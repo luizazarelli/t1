@@ -5,8 +5,6 @@
 void setUp(void) {}
 void tearDown(void) {}
 
-/* --- createQuadra / getters --- */
-
 void test_create_and_get(void) {
     Quadra q = createQuadra("b01.1", 100.0, 200.0, 120.0, 80.0,
                              "1.0px", "gold", "black");
@@ -32,24 +30,21 @@ void test_defaults_when_null_strings(void) {
     freeQuadra(q);
 }
 
-/* --- calcularEnderecoQuadra --- */
-
 void test_face_N(void) {
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double x, y;
     calcularEnderecoQuadra(q, 'N', 30.0, &x, &y);
-    TEST_ASSERT_EQUAL_FLOAT(10.0 + 30.0, x); /* x + num */
-    TEST_ASSERT_EQUAL_FLOAT(20.0 + 60.0, y); /* y + h   */
+    TEST_ASSERT_EQUAL_FLOAT(10.0 + 30.0, x); 
+    TEST_ASSERT_EQUAL_FLOAT(20.0 + 60.0, y); 
     freeQuadra(q);
 }
 
 void test_face_S(void) {
-    /* Face S = face sul = topo da quadra: x + num, y */
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double x, y;
     calcularEnderecoQuadra(q, 'S', 30.0, &x, &y);
-    TEST_ASSERT_EQUAL_FLOAT(10.0 + 30.0, x); /* x + num */
-    TEST_ASSERT_EQUAL_FLOAT(20.0,        y); /* y       */
+    TEST_ASSERT_EQUAL_FLOAT(10.0 + 30.0, x); 
+    TEST_ASSERT_EQUAL_FLOAT(20.0,        y); 
     freeQuadra(q);
 }
 
@@ -57,8 +52,8 @@ void test_face_L(void) {
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double x, y;
     calcularEnderecoQuadra(q, 'L', 15.0, &x, &y);
-    TEST_ASSERT_EQUAL_FLOAT(10.0 + 100.0, x); /* x + w   */
-    TEST_ASSERT_EQUAL_FLOAT(20.0 + 15.0,  y); /* y + num */
+    TEST_ASSERT_EQUAL_FLOAT(10.0 + 100.0, x); 
+    TEST_ASSERT_EQUAL_FLOAT(20.0 + 15.0,  y); 
     freeQuadra(q);
 }
 
@@ -66,13 +61,12 @@ void test_face_O(void) {
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double x, y;
     calcularEnderecoQuadra(q, 'O', 15.0, &x, &y);
-    TEST_ASSERT_EQUAL_FLOAT(10.0,        x); /* x       */
-    TEST_ASSERT_EQUAL_FLOAT(20.0 + 15.0, y); /* y + num */
+    TEST_ASSERT_EQUAL_FLOAT(10.0,        x); 
+    TEST_ASSERT_EQUAL_FLOAT(20.0 + 15.0, y); 
     freeQuadra(q);
 }
 
 void test_face_W_same_as_L(void) {
-    /* Face W nos .qry aponta para face Leste (x+w, y+num) */
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double xL, yL, xW, yW;
     calcularEnderecoQuadra(q, 'L', 40.0, &xL, &yL);

@@ -7,3 +7,4 @@ tst/t_quadra
 tst/t_habitante
 tst/t_hashfile
 tst/t_hash_extensivel
+tst/t_system

@@ -5,8 +5,6 @@
 void setUp(void) {}
 void tearDown(void) {}
 
-/* --- createHabitante / getters básicos --- */
-
 void test_create_and_get(void) {
     Habitante h = createHabitante("000.001.001-01", "Ana", "Silva", 'F', "01/01/1990");
     TEST_ASSERT_NOT_NULL(h);
@@ -18,15 +16,11 @@ void test_create_and_get(void) {
     freeHabitante(h);
 }
 
-/* --- isMorador: recém criado é sem-teto --- */
-
 void test_new_habitante_is_sem_teto(void) {
     Habitante h = createHabitante("000.002.002-02", "Carlos", "Souza", 'M', "15/06/1985");
     TEST_ASSERT_FALSE(isMorador(h));
     freeHabitante(h);
 }
-
-/* --- setHabitanteEndereco torna morador --- */
 
 void test_set_endereco_makes_morador(void) {
     Habitante h = createHabitante("000.003.003-03", "Lucia", "Pereira", 'F', "20/03/1970");
@@ -39,8 +33,6 @@ void test_set_endereco_makes_morador(void) {
     freeHabitante(h);
 }
 
-/* --- removerEnderecoHabitante volta a sem-teto --- */
-
 void test_remover_endereco_volta_sem_teto(void) {
     Habitante h = createHabitante("000.004.004-04", "Pedro", "Costa", 'M', "10/10/1995");
     setHabitanteEndereco(h, "b02.3", 'L', 10.0, "Casa");
@@ -49,8 +41,6 @@ void test_remover_endereco_volta_sem_teto(void) {
     TEST_ASSERT_FALSE(isMorador(h));
     freeHabitante(h);
 }
-
-/* --- mudar de endereco --- */
 
 void test_change_endereco(void) {
     Habitante h = createHabitante("000.005.005-05", "Maria", "Lima", 'F', "05/05/2000");
@@ -61,8 +51,6 @@ void test_change_endereco(void) {
     TEST_ASSERT_EQUAL_FLOAT(20.0, getHabitanteEndNum(h));
     freeHabitante(h);
 }
-
-/* --- getHabitanteSize > 0 --- */
 
 void test_getHabitanteSize(void) {
     TEST_ASSERT_GREATER_THAN(0, (int)getHabitanteSize());
