@@ -1,5 +1,9 @@
-.o
-ted
-t_hashtable
-t_list
-t_paths
+# compilados
+*.o
+src/ted
+tst/t_list
+tst/t_paths
+tst/t_quadra
+tst/t_habitante
+tst/t_hashfile
+tst/t_hash_extensivel
