@@ -43,8 +43,8 @@ void test_face_S(void) {
     Quadra q = createQuadra("t", 10.0, 20.0, 100.0, 60.0, NULL, NULL, NULL);
     double x, y;
     calcularEnderecoQuadra(q, 'S', 30.0, &x, &y);
-    TEST_ASSERT_EQUAL_FLOAT(10.0 + 30.0, x); 
-    TEST_ASSERT_EQUAL_FLOAT(20.0,        y); 
+    TEST_ASSERT_EQUAL_FLOAT(10.0 + 100.0, x);
+    TEST_ASSERT_EQUAL_FLOAT(20.0 + 30.0,  y);
     freeQuadra(q);
 }
 

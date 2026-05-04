@@ -639,7 +639,7 @@ static void handle_mud(const char* linha, QryCtx* ctx) {
                 calcularEnderecoQuadra(qDest, extractFace(face_str), num, &dx, &dy);
                 bool go_above;
                 if (ctx->right_side)
-                    go_above = (ctx->mud_idx == ctx->N_mud - 1);
+                    go_above = (ctx->mud_idx == 0);
                 else
                     go_above = (ctx->mud_idx > 0 && ctx->mud_idx < ctx->N_mud - 1);
                 svgMudCircles(ctx->svg, dx, dy, getHabitanteCpf(h),
@@ -726,7 +726,7 @@ static PrescanResult prescan_qry(FILE* qry, void* hash_quadras,
 
 static void compute_viewbox(int N_mud, int N_badges, int N_above, int N_left,
                             double minX, double minY, double maxX, double maxY,
-                            double max_mud_x, double max_mud_y,
+                            double max_mud_x, double max_mud_y, int vby_const,
                             double* vbx, double* vby, double* vbW, double* vbH) {
     if (N_badges > 0) {
         *vbx = minX - 5.0; *vby = -5.0;
@@ -734,8 +734,8 @@ static void compute_viewbox(int N_mud, int N_badges, int N_above, int N_left,
         *vbW = (maxX - *vbx) + 140.0 + (double)(nb - 1) * 110.0;
         *vbH = maxY - *vby + 10.0;
     } else if (N_mud > 0) {
-        *vby = (N_above > 0) ? -((int)(max_mud_y / 35.0) + 30) : minY - 5.0;
-        *vbx = (N_left  > 0) ? -((int)(max_mud_x / 57.0) + 116) : minX - 5.0;
+        *vby = (N_above > 0) ? -((int)(max_mud_y / 43.0) + vby_const) : minY - 5.0;
+        *vbx = (N_left  > 0) ? -((int)(max_mud_x / 84.0) + 70) : minX - 5.0;
         double re = (max_mud_x + 12.5 > maxX) ? max_mud_x + 12.5 : maxX;
         double be = (max_mud_y + 12.5 > maxY) ? max_mud_y + 12.5 : maxY;
         *vbW = re + 10.0 - *vbx;
@@ -765,7 +765,7 @@ void readQry(void* paths, void* hash_quadras, void* hash_hab) {
 
     double city_cx = (minX + maxX) / 2.0;
     char ff = ps.first_face;
-    bool right_side = (ff == 'O') ? true : (ps.first_mud_x > city_cx);
+    bool right_side = (ff == 'O' || ff == 'S') ? true : (ps.first_mud_x > city_cx);
     int N_above = 0, N_left = 0;
     if (ps.N_mud == 1) {
         if (right_side) N_above = 1; else N_left = 1;
@@ -774,10 +774,12 @@ void readQry(void* paths, void* hash_quadras, void* hash_hab) {
         else            { N_left = (ps.N_mud >= 2) ? 2 : 1; N_above = ps.N_mud - N_left; }
     }
 
+    int vby_const = (ff == 'S' || ff == 'N') ? 106 : 76;
     double vbx, vby, vbW, vbH;
     compute_viewbox(ps.N_mud, ps.N_badges, N_above, N_left,
                     minX, minY, maxX, maxY,
-                    ps.max_mud_x, ps.max_mud_y, &vbx, &vby, &vbW, &vbH);
+                    ps.max_mud_x, ps.max_mud_y, vby_const,
+                    &vbx, &vby, &vbW, &vbH);
 
     FILE* svg = fopen(getBsdGeoQrySvg(paths), "w");
     if (svg) {
