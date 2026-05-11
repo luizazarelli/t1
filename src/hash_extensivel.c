@@ -28,7 +28,6 @@ struct HashExtensivel {
     Diretorio dir;
 };
 
-/* hash de espalhamento: distribui os bits da chave uniformemente */
 static unsigned int h(int k) {
     unsigned int uk = (unsigned int)k;
     uk ^= uk >> 16;
@@ -37,7 +36,6 @@ static unsigned int h(int k) {
     return uk;
 }
 
-/* usa os p bits menos significativos do hash como indice no diretorio */
 static int calcula_indice(int k, int p) {
     return (int)(h(k) & ((1u << p) - 1u));
 }
@@ -119,14 +117,12 @@ static void split(HashExtensivel* h_ext, int idx_split) {
     long off_novo = ftell(h_ext->dados);
     fwrite(&b_nova, sizeof(Bucket), 1, h_ext->dados);
 
-    /* redireciona entradas do diretorio cujo bit discriminante esta ligado */
     unsigned int bit = 1u << (b_velha.p_local - 1);
     for (int i = 0; i < h_ext->dir.n_entradas; i++) {
         if (h_ext->dir.enderecos[i] == off_velho && ((unsigned int)i & bit) != 0u)
             h_ext->dir.enderecos[i] = off_novo;
     }
 
-    /* grava bucket antigo zerado e redistribui seus itens */
     Registro copia[BUCKET_SIZE];
     int n = b_velha.ocupacao;
     memcpy(copia, b_velha.itens, sizeof(Registro) * n);
@@ -146,7 +142,6 @@ bool hash_extensivel_inserir(HashExtensivel* h_ext, int chave, const char* valor
     fseek(h_ext->dados, h_ext->dir.enderecos[pos], SEEK_SET);
     fread(&aux_b, sizeof(Bucket), 1, h_ext->dados);
 
-    /* atualiza valor se a chave ja existe (evita duplicatas e recursao infinita) */
     for (int i = 0; i < aux_b.ocupacao; i++) {
         if (aux_b.itens[i].id == chave) {
             strncpy(aux_b.itens[i].dado, valor, 49);
